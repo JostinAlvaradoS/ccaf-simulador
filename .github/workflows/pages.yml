@@ -28,7 +28,11 @@ jobs:
       - name: Tests del motor
         run: npm test
       - name: Verificar que el banco commiteado está al día
-        run: git diff --exit-code -- site/data/bank.json || (echo "::error::site/data/bank.json desactualizado: corré npm run build y commiteá" && exit 1)
+        run: |
+          if ! git diff --exit-code -- site/data/bank.json; then
+            echo "::error::site/data/bank.json desactualizado. Corré npm run build y commiteá el resultado."
+            exit 1
+          fi
       - uses: actions/upload-pages-artifact@v3
         with: { path: site }
   deploy:
