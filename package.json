@@ -1,0 +1,13 @@
+{
+  "name": "ccaf-simulador",
+  "version": "1.0.0",
+  "description": "Simulador del examen Claude Certified Architect – Foundations (CCAR-F): modo práctica por dominio y modo examen con temporizador.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "python3 scripts/build_bank.py",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "serve": "python3 -m http.server 8080 --directory site"
+  },
+  "engines": { "node": ">=20" }
+}

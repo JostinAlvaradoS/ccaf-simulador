@@ -1,0 +1,59 @@
+{
+  "_fuente": "Guía oficial del examen CCAR-F, sección 5 «Exam Scenarios». Textos en inglés transcritos de la guía; español traducido para el modo práctica.",
+  "escenarios": [
+    {
+      "id": "S1",
+      "title": { "en": "Customer Support Resolution Agent", "es": "Agente de resolución de soporte al cliente" },
+      "context": {
+        "en": "You are building a customer support resolution agent using the Claude Agent SDK. The agent handles high-ambiguity requests like returns, billing disputes, and account issues. It has access to your backend systems through custom Model Context Protocol (MCP) tools (get_customer, lookup_order, process_refund, escalate_to_human). Your target is 80%+ first-contact resolution while knowing when to escalate.",
+        "es": "Estás construyendo un agente de resolución de soporte al cliente con el Claude Agent SDK. El agente atiende solicitudes de alta ambigüedad como devoluciones, disputas de facturación y problemas de cuenta. Accede a tus sistemas backend mediante herramientas MCP personalizadas (get_customer, lookup_order, process_refund, escalate_to_human). El objetivo es superar el 80 % de resolución en primer contacto sabiendo cuándo escalar."
+      },
+      "primaryDomains": [1, 2, 5]
+    },
+    {
+      "id": "S2",
+      "title": { "en": "Code Generation with Claude Code", "es": "Generación de código con Claude Code" },
+      "context": {
+        "en": "You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.",
+        "es": "Usas Claude Code para acelerar el desarrollo de software. Tu equipo lo emplea para generar código, refactorizar, depurar y documentar. Necesitas integrarlo en el flujo de trabajo con comandos slash personalizados y configuraciones de CLAUDE.md, y entender cuándo usar el modo de planificación frente a la ejecución directa."
+      },
+      "primaryDomains": [3, 5]
+    },
+    {
+      "id": "S3",
+      "title": { "en": "Multi-Agent Research System", "es": "Sistema de investigación multiagente" },
+      "context": {
+        "en": "You are building a multi-agent research system using the Claude Agent SDK. A coordinator agent delegates to specialized subagents: one searches the web, one analyzes documents, one synthesizes findings, and one generates reports. The system researches topics and produces comprehensive, cited reports.",
+        "es": "Estás construyendo un sistema de investigación multiagente con el Claude Agent SDK. Un agente coordinador delega en subagentes especializados: uno busca en la web, otro analiza documentos, otro sintetiza hallazgos y otro genera informes. El sistema investiga temas y produce informes completos con citas."
+      },
+      "primaryDomains": [1, 2, 5]
+    },
+    {
+      "id": "S4",
+      "title": { "en": "Developer Productivity with Claude", "es": "Productividad del desarrollador con Claude" },
+      "context": {
+        "en": "You are building developer productivity tools using the Claude Agent SDK. The agent helps engineers explore unfamiliar codebases, understand legacy systems, generate boilerplate code, and automate repetitive tasks. It uses the built-in tools (Read, Write, Bash, Grep, Glob) and integrates with Model Context Protocol (MCP) servers.",
+        "es": "Estás construyendo herramientas de productividad para desarrolladores con el Claude Agent SDK. El agente ayuda a explorar bases de código desconocidas, entender sistemas heredados, generar código repetitivo y automatizar tareas. Usa las herramientas nativas (Read, Write, Bash, Grep, Glob) y se integra con servidores MCP."
+      },
+      "primaryDomains": [2, 3, 1]
+    },
+    {
+      "id": "S5",
+      "title": { "en": "Claude Code for Continuous Integration", "es": "Claude Code para integración continua" },
+      "context": {
+        "en": "You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.",
+        "es": "Estás integrando Claude Code en tu pipeline de CI/CD. El sistema ejecuta revisiones de código automatizadas, genera casos de prueba y da retroalimentación en pull requests. Necesitas diseñar prompts que produzcan comentarios accionables y minimicen los falsos positivos."
+      },
+      "primaryDomains": [3, 4]
+    },
+    {
+      "id": "S6",
+      "title": { "en": "Structured Data Extraction", "es": "Extracción de datos estructurados" },
+      "context": {
+        "en": "You are building a structured data extraction system using Claude. The system extracts information from unstructured documents, validates the output using JavaScript Object Notation (JSON) schemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with downstream systems.",
+        "es": "Estás construyendo un sistema de extracción de datos estructurados con Claude. El sistema extrae información de documentos no estructurados, valida la salida con esquemas JSON y mantiene alta precisión. Debe manejar casos límite con elegancia e integrarse con sistemas posteriores."
+      },
+      "primaryDomains": [4, 5]
+    }
+  ]
+}
