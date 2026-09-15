@@ -839,7 +839,7 @@
     "explanation": "It adds unnecessary complexity to the test generation step."
    }
   ],
-  "rationale": "-p en ambos, JSON solo donde hace falta parseo, e invocaciones independientes."
+  "rationale": "Use -p for both steps; add JSON output only where parsing is needed; keep the invocations separate."
  },
  "EX-035": {
   "stem": "A research subagent's database query fails partway through an investigation. Which pieces of information belong in the structured error context it returns to the coordinator? (Select 3)",
@@ -1083,7 +1083,7 @@
     "explanation": "Without context: fork, verbose output floods the main conversation's context."
    }
   ],
-  "rationale": ".claude/skills/ (versionado) + context: fork (aislamiento)."
+  "rationale": ".claude/skills/ (version-controlled) + context: fork (isolation)."
  },
  "EX-045": {
   "stem": "A research subagent queries an academic journal database for articles on renewable energy policy. The database responds successfully but returns zero matching articles. Meanwhile, a second subagent querying a government statistics API receives a connection timeout. The coordinator currently handles both cases identically by retrying three times. What should change?",
@@ -1158,7 +1158,7 @@
    {
     "id": "D",
     "text": "Restart the whole pipeline from scratch with a fresh coordinator to avoid contaminated context",
-    "explanation": "Un reinicio completo tira hallazgos correctos y repite trabajo."
+    "explanation": "A full restart throws away correct findings and repeats work."
    }
   ],
   "rationale": "Iterative refinement loop, owned by the coordinator."
@@ -1369,7 +1369,7 @@
     "explanation": "Server-side queuing removes the agent's ability to prioritize, cancel, or reorder."
    }
   ],
-  "rationale": "transient + isRetryable + retryAfterMs."
+  "rationale": "Transient error category + isRetryable + retryAfterMs."
  },
  "EX-057": {
   "stem": "A docs team asks Claude Code to audit documentation coverage across a 500,000-line codebase. After reading 30 files via the Read tool, the conversation is approaching the context limit and earlier tool results will be summarised away by auto-compaction. The agent still needs that earlier information to complete the audit. What is the best strategy?",

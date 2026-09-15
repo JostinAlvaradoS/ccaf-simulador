@@ -2993,7 +2993,7 @@
        "explanation": "It adds unnecessary complexity to the test generation step."
       }
      ],
-     "rationale": "-p en ambos, JSON solo donde hace falta parseo, e invocaciones independientes."
+     "rationale": "Use -p for both steps; add JSON output only where parsing is needed; keep the invocations separate."
     },
     "es": {
      "stem": "Un equipo quiere que su pipeline de CI ejecute Claude Code tanto para la revisión de código de un pull request (PR) como para la generación automática de pruebas. La revisión del PR debe producir una salida JSON estructurada para integrarse con su dashboard de revisión, mientras que la generación de pruebas debe producir una salida de texto estándar. ¿Cómo deberían configurarse los dos pasos del pipeline?",
@@ -3746,7 +3746,7 @@
        "explanation": "Without context: fork, verbose output floods the main conversation's context."
       }
      ],
-     "rationale": ".claude/skills/ (versionado) + context: fork (aislamiento)."
+     "rationale": ".claude/skills/ (version-controlled) + context: fork (isolation)."
     },
     "es": {
      "stem": "Un equipo de documentación crea una skill /generate-api-docs que lee archivos de código fuente y produce páginas de referencia de API en Markdown. La skill genera una salida extensa (más de 200 líneas por endpoint) y debe estar disponible para todos los miembros del equipo que clonen el repositorio. ¿Cómo debería configurarse la skill?",
@@ -3986,7 +3986,7 @@
       {
        "id": "D",
        "text": "Restart the whole pipeline from scratch with a fresh coordinator to avoid contaminated context",
-       "explanation": "Un reinicio completo tira hallazgos correctos y repite trabajo."
+       "explanation": "A full restart throws away correct findings and repeats work."
       }
      ],
      "rationale": "Iterative refinement loop, owned by the coordinator."
@@ -4634,7 +4634,7 @@
        "explanation": "Server-side queuing removes the agent's ability to prioritize, cancel, or reorder."
       }
      ],
-     "rationale": "transient + isRetryable + retryAfterMs."
+     "rationale": "Transient error category + isRetryable + retryAfterMs."
     },
     "es": {
      "stem": "Un agente de investigación llama a una API externa a través de un servidor MCP. Después de la consulta número 30 en un lote de 50, la API empieza a devolver errores HTTP 429. El servidor MCP devuelve un genérico 'Request failed' para cada fallo, por lo que el agente abandona el lote tras tres fallos consecutivos. ¿Qué cambio en el servidor MCP mejoraría más la resiliencia?",
