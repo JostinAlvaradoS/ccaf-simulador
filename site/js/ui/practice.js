@@ -15,43 +15,76 @@ export function renderPractice({ bank, params }) {
 
   function renderSetup() {
     const stats = practiceStats();
+    const countEl = h('div', { class: 'notice', style: 'margin-top:1rem' });
+
     const domFs = h('fieldset', {}, h('legend', {}, 'Dominios'));
     for (const d of [...bank.domains, { id: 0, name: { es: 'Transversales (modelos, seguridad, plataforma)' } }]) {
       const n = bank.meta.byDomain[d.id] ?? 0;
-      domFs.append(h('label', { class: 'check' }, h('input', { type: 'checkbox', value: d.id, onChange: (e) => { toggle(state.domains, d.id, e.target.checked); refreshTopics(); } }), `D${d.id} · ${d.name.es} `, h('span', { class: 'muted small' }, `(${n})`)));
+      domFs.append(h('label', { class: 'check' }, h('input', { type: 'checkbox', value: d.id, checked: state.domains.includes(d.id), onChange: (e) => { toggle(state.domains, d.id, e.target.checked); refreshTopics(); refreshCount(); } }), `D${d.id} · ${d.name.es} `, h('span', { class: 'muted small' }, `(${n})`)));
     }
-    const topicSel = h('select', { multiple: true, size: 8, style: 'width:100%', onChange: (e) => { state.topics = Array.from(e.target.selectedOptions).map((o) => o.value); } });
-    const topicFs = h('fieldset', {}, h('legend', {}, 'Tópicos (opcional)'), topicSel, h('p', { class: 'muted small', style: 'margin:.4rem 0 0' }, 'Ctrl/Cmd + clic para varios. Vacío = todos los del dominio.'));
+
+    const topicList = h('div', { class: 'stack', style: 'max-height:16rem;overflow:auto' });
+    const topicFs = h('fieldset', {}, h('legend', {}, 'Subtemas (opcional)'),
+      h('p', { class: 'muted small', style: 'margin:0 0 .4rem' }, 'Cada dominio se divide en subtemas. Sin marcar ninguno, entran todos los del dominio. Entre paréntesis: preguntas vistas / total.'),
+      topicList);
     function refreshTopics() {
-      topicSel.replaceChildren();
-      const ts = bank.topics.filter((t) => !state.domains.length || state.domains.includes(t.domain));
-      for (const t of ts) {
-        const n = bank.questions.filter((q) => q.topic === t.id).length;
-        const seen = bank.questions.filter((q) => q.topic === t.id && stats[q.id]).length;
-        topicSel.append(h('option', { value: t.id }, `D${t.domain} · ${t.name} (${seen}/${n})`));
+      topicList.replaceChildren();
+      const doms = state.domains.length ? state.domains : bank.domains.map((d) => d.id).concat(0);
+      state.topics = state.topics.filter((t) => doms.includes(bank.topics.find((x) => x.id === t)?.domain));
+      for (const d of doms) {
+        const ts = bank.topics.filter((t) => t.domain === d);
+        if (!ts.length) continue;
+        const group = h('div', {}, h('div', { class: 'small', style: 'font-weight:600;margin:.3rem 0 .1rem' }, d === 0 ? 'Transversales' : `D${d}`));
+        for (const t of ts) {
+          const n = bank.questions.filter((q) => q.topic === t.id).length;
+          const seen = bank.questions.filter((q) => q.topic === t.id && stats[q.id]).length;
+          group.append(h('label', { class: 'check small' }, h('input', { type: 'checkbox', value: t.id, checked: state.topics.includes(t.id), onChange: (e) => { toggle(state.topics, t.id, e.target.checked); refreshCount(); } }), `${t.name} `, h('span', { class: 'muted' }, `(${seen}/${n})`)));
+        }
+        topicList.append(group);
       }
-      state.topics = [];
     }
     refreshTopics();
 
-    const scnFs = h('fieldset', {}, h('legend', {}, 'Escenarios (opcional)'));
-    for (const s of bank.scenarios) scnFs.append(h('label', { class: 'check' }, h('input', { type: 'checkbox', value: s.id, onChange: (e) => toggle(state.scenarios, s.id, e.target.checked) }), `${s.id} · ${s.title.es}`));
+    const scnFs = h('fieldset', {}, h('legend', {}, 'Escenarios (opcional)'),
+      h('p', { class: 'muted small', style: 'margin:0 0 .4rem' }, 'Cada pregunta pertenece a uno de los 6 escenarios del examen. Sin marcar ninguno, entran todos.'));
+    for (const s of bank.scenarios) {
+      const n = bank.meta.byScenario[s.id] ?? 0;
+      scnFs.append(h('label', { class: 'check' }, h('input', { type: 'checkbox', value: s.id, checked: state.scenarios.includes(s.id), onChange: (e) => { toggle(state.scenarios, s.id, e.target.checked); refreshCount(); } }), `${s.id} · ${s.title.es} `, h('span', { class: 'muted small' }, `(${n})`)));
+    }
 
     const failed = failedIds();
     const optsFs = h('fieldset', {}, h('legend', {}, 'Opciones'),
-      h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: state.onlyFailed, disabled: !failed.length, onChange: (e) => { state.onlyFailed = e.target.checked; } }), `Solo las que fallé la última vez (${failed.length})`),
-      h('label', { class: 'check' }, 'Cantidad ', h('select', { onChange: (e) => { state.limit = Number(e.target.value); } }, [10, 20, 30, 50, 0].map((n) => h('option', { value: n, selected: n === state.limit }, n ? String(n) : 'Todas')))),
+      h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: state.onlyFailed, disabled: !failed.length, onChange: (e) => { state.onlyFailed = e.target.checked; refreshCount(); } }), `Solo las que fallé la última vez (${failed.length})`),
+      h('label', { class: 'check' }, 'Cantidad ', h('select', { onChange: (e) => { state.limit = Number(e.target.value); refreshCount(); } }, [10, 20, 30, 50, 0].map((n) => h('option', { value: n, selected: n === state.limit }, n ? String(n) : 'Todas')))),
       h('label', { class: 'check' }, 'Idioma de la pregunta ', h('select', { onChange: (e) => { state.lang = e.target.value; setPref('lang', state.lang); } }, h('option', { value: 'en', selected: state.lang === 'en' }, 'Inglés (como el examen)'), h('option', { value: 'es', selected: state.lang === 'es' }, 'Español'))),
       h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: state.showAlt, onChange: (e) => { state.showAlt = e.target.checked; setPref('showAlt', state.showAlt); } }), 'Mostrar también la traducción'),
     );
 
+    const startBtn = h('button', { class: 'btn-primary', onClick: start }, 'Empezar');
+    function matching() {
+      const ids = state.onlyFailed ? failedIds() : null;
+      return bank.questions.filter((q) =>
+        (!state.domains.length || state.domains.includes(q.domain)) &&
+        (!state.topics.length || state.topics.includes(q.topic)) &&
+        (!state.scenarios.length || state.scenarios.includes(q.scenario)) &&
+        (!ids || ids.includes(q.id))).length;
+    }
+    function refreshCount() {
+      const n = matching();
+      const take = state.limit ? Math.min(n, state.limit) : n;
+      countEl.textContent = n ? `${n} preguntas coinciden con el filtro. La sesión tomará ${take}${take < n ? ' al azar' : ''}.` : 'Ninguna pregunta coincide con ese filtro. Quitá alguna casilla.';
+      startBtn.disabled = !n;
+    }
+    refreshCount();
+
     root.replaceChildren(
       h('div', { class: 'card' },
         h('h1', {}, 'Modo práctica'),
-        h('p', { class: 'muted' }, 'Elegís qué practicar y recibís la corrección al instante: por qué la opción correcta lo es y por qué cada distractor no. Tu avance se guarda en este navegador.'),
+        h('p', { class: 'muted' }, 'Elegís qué practicar y recibís la corrección al instante: por qué la opción correcta lo es y por qué cada distractor no. Los filtros se combinan entre sí. Tu avance se guarda en este navegador.'),
         h('div', { class: 'grid grid-2', style: 'margin-top:1rem' }, domFs, topicFs, scnFs, optsFs),
+        countEl,
         h('div', { class: 'row', style: 'margin-top:1rem' },
-          h('button', { class: 'btn-primary', onClick: start }, 'Empezar'),
+          startBtn,
           h('a', { class: 'btn btn-ghost', href: '#/progreso' }, 'Ver mi semáforo por statement')),
       ));
   }

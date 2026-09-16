@@ -2,7 +2,7 @@
 
 Simulador del examen **Claude Certified Architect – Foundations (CCAR-F)** de Anthropic, construido para el Programa Orquestador CCAF. Dos modos:
 
-- **Práctica**: elegís dominio, tópico o escenario y recibís corrección inmediata con la explicación de *cada* opción, no solo de la correcta. Hay filtro "solo las que fallé".
+- **Práctica**: elegís dominio, subtema o escenario y recibís corrección inmediata con la explicación de *cada* opción, no solo de la correcta. Hay filtro "solo las que fallé".
 - **Examen**: 60 preguntas, 120 minutos, 4 de 6 escenarios, cuotas por dominio según el blueprint oficial, marcar para revisar, pantalla de revisión antes de entregar, sin retroalimentación hasta el final. El puntaje se escala a 100–1000 con corte en 720 y se desglosa por dominio como en el informe real.
 
 El progreso vive en el navegador (localStorage) y se puede exportar e importar como JSON.
